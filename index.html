@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>保护珍稀动物 - 大熊猫与濒危动物保护倡议</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1a5d1a;
+            --secondary-color: #4a9e4a;
+            --accent-color: #ff6b35;
+            --accent-green: #6bc77a;
+            --bg-light: #f5f7f5;
+            --bg-white: #ffffff;
+            --text-dark: #1e3a1e;
+            --text-medium: #3d5c3d;
+            --text-light: #7a8e7a;
+            --white: #ffffff;
+            --shadow: rgba(26, 93, 26, 0.12);
+            --shadow-hover: rgba(26, 93, 26, 0.2);
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            background-color: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: var(--bg-white);
+            box-shadow: 0 2px 12px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-transform: uppercase;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            transition: color 0.3s, transform 0.3s;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-green));
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        /* 移动端菜单按钮 */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            z-index: 1001;
+        }
+
+        .menu-toggle .bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        /* 主区域 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(26, 93, 26, 0.88) 0%, rgba(74, 158, 74, 0.78) 65%, rgba(107, 199, 122, 0.7) 100%),
+                        url('https://images6.alphacoders.com/101/1017260.jpg?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat fixed;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero-content {
+            z-index: 2;
+            color: var(--white);
+            padding: 2rem;
+            max-width: 900px;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.5), 0 0 20px rgba(26, 93, 26, 0.3);
+            animation: fadeInUp 1s ease-out;
+            font-weight: 900;
+            white-space: nowrap;
+            letter-spacing: 0.05em;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.75rem;
+            margin-bottom: 3rem;
+            opacity: 0.98;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+            font-weight: 300;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+            letter-spacing: 0.02em;
+        }
+
+        .cta-button {
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            background: var(--white);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            animation: fadeInUp 1s ease-out 0.4s backwards;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(26, 93, 26, 0.4);
+            background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 100%);
+            color: var(--primary-color);
+        }
+
+        /* 统计数据 */
+        .stats {
+            background: var(--white);
+            padding: 4rem 0;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .stats .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border-radius: 15px;
+            color: var(--white);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 5px 18px var(--shadow);
+            opacity: 0;
+            transform: translateY(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: var(--delay);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px var(--shadow-hover);
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        /* 动物介绍区域 */
+        .animals-section {
+            padding: 6rem 0;
+            background: var(--bg-light);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            color: var(--text-light);
+            margin-bottom: 4rem;
+            font-style: italic;
+        }
+
+        /* 大熊猫特色介绍 */
+        .animal-featured {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 5rem;
+            background: var(--bg-white);
+            padding: 4rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px var(--shadow);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            opacity: 0;
+            transform: scale(0.95);
+            border: 1px solid rgba(26, 93, 26, 0.08);
+        }
+
+        .animal-featured.visible {
+            opacity: 1;
+            transform: scale(1);
+            transition: transform 0.6s ease-out, box-shadow 0.6s ease-out, opacity 0.6s ease-out;
+        }
+
+
+        .animal-featured:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 60px var(--shadow-hover);
+            border-color: rgba(26, 93, 26, 0.15);
+        }
+
+        .animal-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            height: 450px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .animal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            filter: brightness(0.98);
+        }
+
+        .animal-featured:hover .animal-image {
+            transform: scale(1.1);
+            filter: brightness(1.05);
+        }
+
+        .animal-name {
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .animal-scientific {
+            font-style: italic;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .animal-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .detail-item {
+            line-height: 1.8;
+            padding-left: 15px;
+            border-left: 3px solid var(--secondary-color);
+        }
+
+        .detail-item strong {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        /* 动物卡片网格 */
+        .animals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .animal-card {
+            background: var(--bg-white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px);
+            border: 1px solid rgba(26, 93, 26, 0.06);
+        }
+        
+        .animal-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: var(--delay);
+        }
+
+
+        .animal-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 45px var(--shadow-hover);
+            border-color: rgba(74, 158, 74, 0.2);
+        }
+
+        .card-image {
+            height: 250px;
+            background: linear-gradient(135deg, rgba(26, 93, 26, 0.85) 0%, rgba(74, 158, 74, 0.7) 50%, rgba(107, 199, 122, 0.6) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            transition: all 0.6s ease;
+            filter: grayscale(40%);
+        }
+
+        .animal-card:hover .card-image img {
+            opacity: 0.7;
+            filter: grayscale(0%);
+            transform: scale(1.2);
+        }
+
+        .card-content .animal-emoji { 
+            font-size: 2.2rem;
+            margin-right: 10px;
+            line-height: 1;
+            display: inline-block;
+            text-shadow: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .animal-card:hover .card-content .animal-emoji {
+            transform: rotate(-10deg);
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .card-content h4 {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .scientific {
+            font-style: italic;
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .habitat {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .description {
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .card-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .card-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* 保护必要性区域 */
+        .protection-section {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+        }
+
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .reason-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f5faf5 100%);
+            padding: 3rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(26, 93, 26, 0.12);
+            box-shadow: 0 5px 18px var(--shadow);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: rotateX(-30deg) translateY(50px);
+            transform-origin: bottom;
+        }
+        
+        .reason-card.visible {
+            opacity: 1;
+            transform: rotateX(0) translateY(0);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition-delay: var(--delay);
+        }
+
+        .reason-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 38px var(--shadow-hover);
+            background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 100%);
+            border-color: rgba(74, 158, 74, 0.25);
+        }
+
+        .reason-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .reason-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+
+        .reason-card p {
+            color: var(--text-dark);
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* 行动倡议区域 */
+        .action-section {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, rgba(26, 93, 26, 0.92) 0%, rgba(74, 158, 74, 0.88) 50%, rgba(107, 199, 122, 0.85) 100%),
+                        url('https://images.unsplash.com/photo-1548222606-6c4f581fd09d?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat fixed;
+            color: var(--white);
+            position: relative;
+        }
+
+        .action-section .section-title,
+        .action-section .section-subtitle {
+            color: var(--white);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .action-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        
+        .action-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+            transition-delay: var(--delay);
+        }
+
+        .action-item:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .action-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            opacity: 0.4;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+
+        .action-item h3 {
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .action-item p {
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .pledge-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 4rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .pledge-box h3 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .pledge-box p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .pledge-button {
+            padding: 1.1rem 3.5rem;
+            font-size: 1.3rem;
+            background: var(--white);
+            color: var(--primary-color);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .pledge-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 30px rgba(26, 93, 26, 0.4);
+            background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 100%);
+        }
+
+        /* 页脚 */
+        .footer {
+            background: var(--text-dark);
+            color: var(--white);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.8;
+            padding: 0 10px;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            animation: fadeIn 0.3s;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 5% auto;
+            padding: 3rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 750px;
+            position: relative;
+            animation: slideDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            position: absolute;
+            right: 2rem;
+            top: 1.5rem;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: color 0.3s;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: var(--accent-color);
+            transform: rotate(90deg);
+        }
+
+        #pledgeForm {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        #pledgeForm input,
+        #pledgeForm textarea {
+            padding: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        #pledgeForm input:focus,
+        #pledgeForm textarea:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(74, 124, 36, 0.2);
+            outline: none;
+        }
+
+        #pledgeForm textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            padding: 1.2rem;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* 动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 3.2rem;
+                white-space: nowrap;
+            }
+
+            .hero-subtitle {
+                font-size: 1.5rem;
+            }
+
+            .animal-featured {
+                grid-template-columns: 1fr;
+                padding: 3rem;
+            }
+
+            .animal-image-container {
+                height: 380px;
+            }
+            
+            .navbar .container {
+                padding: 0 20px;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: var(--primary-color);
+                box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+                transition: right 0.4s ease-in-out;
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            .nav-menu a {
+                color: var(--white);
+                font-size: 1.5rem;
+                padding: 1rem 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-menu a:hover {
+                color: #a8e6cf;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+            
+            /* 汉堡菜单关闭时的 X 动画 */
+            .menu-toggle.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .menu-toggle.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            
+            .menu-toggle.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .animal-image-container {
+                height: 300px;
+            }
+            
+            .hero {
+                background-attachment: scroll;
+            }
+            
+            .action-section {
+                background-attachment: scroll;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.8rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            .hero-content {
+                padding: 1.5rem;
+                max-width: 95%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+                white-space: nowrap;
+                letter-spacing: 0;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .animal-featured {
+                padding: 1.5rem;
+            }
+            
+            .animal-name {
+                font-size: 2rem;
+            }
+            
+            .modal-content {
+                padding: 2rem 1rem;
+                margin: 15% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🐼 保护珍稀动物</div>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" onclick="closeMenu()">首页</a></li>
+                <li><a href="#animals" onclick="closeMenu()">动物介绍</a></li>
+                <li><a href="#protection" onclick="closeMenu()">保护措施</a></li>
+                <li><a href="#action" onclick="closeMenu()">行动倡议</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">保护珍稀动物，守护地球家园</h1>
+            <p class="hero-subtitle">每一个物种的消失，都是地球生物多样性的损失</p>
+            <button class="cta-button" onclick="scrollToSection('animals')">了解更多</button>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stat-card" style="--delay: 0s;">
+                <div class="stat-number" data-target="16000">0</div>
+                <div class="stat-label">IUCN红色名录濒危物种</div>
+            </div>
+            <div class="stat-card" style="--delay: 0.1s;">
+                <div class="stat-number" data-target="150">0</div>
+                <div class="stat-label">每天灭绝物种数（估值）</div>
+            </div>
+            <div class="stat-card" style="--delay: 0.2s;">
+                <div class="stat-number" data-target="1864">0</div>
+                <div class="stat-label">野生大熊猫数量</div>
+            </div>
+            <div class="stat-card" style="--delay: 0.3s;">
+                <div class="stat-number" data-target="98">0</div>
+                <div class="stat-label">中国重点保护动物保护成效提升率（98%）</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="animals" class="animals-section">
+        <div class="container">
+            <h2 class="section-title">珍稀动物档案</h2>
+            <p class="section-subtitle">了解它们，才能更好地保护它们</p>
+            
+            <div class="animal-featured" id="featured-panda">
+                <div class="animal-image-container">
+                    <img src="https://images6.alphacoders.com/101/1017260.jpg?q=85&w=1200&auto=format&fit=crop" alt="大熊猫" class="animal-image" loading="eager" onerror="this.src='https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=1200&q=95&auto=format&fit=crop'">
+                </div>
+                <div class="animal-info">
+                    <h3 class="animal-name">🐼 大熊猫</h3>
+                    <p class="animal-scientific">Ailuropoda melanoleuca</p>
+                    <div class="animal-details">
+                        <div class="detail-item">
+                            <strong>栖息地：</strong>中国四川、陕西、甘肃等地的竹林，海拔2600-3500米
+                        </div>
+                        <div class="detail-item">
+                            <strong>习性：</strong>大熊猫是独居动物，主要以竹子为食，每天需要进食12-38公斤竹子。它们性格温和，行动缓慢，是旗帜物种。
+                        </div>
+                        <div class="detail-item">
+                            <strong>保护现状：</strong>易危（VU）。经过多年保护，野生大熊猫数量已稳定增长，保护工作取得显著成效。
+                        </div>
+                        <div class="detail-item">
+                            <strong>面临威胁：</strong>栖息地破碎化、气候变化影响竹子供给、人类活动干扰。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="animals-grid">
+                <div class="animal-card" data-animal="华南虎" style="--delay: 0s;">
+                    <div class="card-image">
+                        <img src="https://www.torontozoo.com/img/1200/20190415034848388SumTigerHKLowRes7.jpg" alt="华南虎" loading="lazy" onerror="this.src='https://www.torontozoo.com/img/1200/20190415034848388SumTigerHKLowRes7.jpg'">
+                    </div>
+                    <div class="card-content">
+                        <h4><span class="animal-emoji">🐅</span>华南虎</h4> 
+                        <p class="scientific">Panthera tigris amoyensis</p>
+                        <p class="habitat">栖息地：中国华南地区</p>
+                        <p class="description">中国特有虎亚种，野外已功能性灭绝，是拯救濒危物种的艰巨挑战。</p>
+                        <button class="card-btn" onclick="showAnimalDetails('华南虎')">查看详情</button>
+                    </div>
+                </div>
+
+                <div class="animal-card" data-animal="朱鹮" style="--delay: 0.1s;">
+                    <div class="card-image">
+                        <img src="https://video.cgtn.com/news/3d3d774d30517a4d32457a6333566d54/video/4467e7328bc440b683e5fd4a7c5d4045/4467e7328bc440b683e5fd4a7c5d4045.jpg" alt="朱鹮" loading="lazy" onerror="this.src='https://video.cgtn.com/news/3d3d774d30517a4d32457a6333566d54/video/4467e7328bc440b683e5fd4a7c5d4045/4467e7328bc440b683e5fd4a7c5d4045.jpg'">
+                    </div>
+                    <div class="card-content">
+                        <h4><span class="animal-emoji">🦩</span>朱鹮</h4>
+                        <p class="scientific">Nipponia nippon</p>
+                        <p class="habitat">栖息地：中国陕西、河南等地</p>
+                        <p class="description">被誉为"东方宝石"，经过保护种群已恢复至数千只，是保护成功的典型案例。</p>
+                        <button class="card-btn" onclick="showAnimalDetails('朱鹮')">查看详情</button>
+                    </div>
+                </div>
+
+                <div class="animal-card" data-animal="长江江豚" style="--delay: 0.2s;">
+                    <div class="card-image">
+                        <img src="http://hbrbapp.hubeidaily.net/68c3bf67-74d2-4b5d-b462-1a2b39ff3b90?q=80&w=800&auto=format&fit=crop" alt="长江江豚" loading="lazy" onerror="this.src='http://hbrbapp.hubeidaily.net/68c3bf67-74d2-4b5d-b462-1a2b39ff3b90?w=800&q=90&auto=format&fit=crop'">
+                    </div>
+                    <div class="card-content">
+                        <h4><span class="animal-emoji">🐬</span>长江江豚</h4>
+                        <p class="scientific">Neophocaena asiaeorientalis</p>
+                        <p class="habitat">栖息地：长江中下游</p>
+                        <p class="description">长江特有淡水豚类，被称为"水中大熊猫"，面临严重生存威胁，极需水域生态改善。</p>
+                        <button class="card-btn" onclick="showAnimalDetails('长江江豚')">查看详情</button>
+                    </div>
+                </div>
+
+                <div class="animal-card" data-animal="雪豹" style="--delay: 0.3s;">
+                    <div class="card-image">
+                        <img src="https://img.freepik.com/premium-photo/enchanting-snow-leopard-stalking-himalayan-mountains_863558-1404.jpg" alt="雪豹" loading="lazy" onerror="this.src='https://img.freepik.com/premium-photo/enchanting-snow-leopard-stalking-himalayan-mountains_863558-1404.jpg'">
+                    </div>
+                    <div class="card-content">
+                        <h4><span class="animal-emoji">🐆</span>雪豹</h4>
+                        <p class="scientific">Panthera uncia</p>
+                        <p class="habitat">栖息地：青藏高原及周边高山</p>
+                        <p class="description">高海拔地区的顶级掠食者，适应极端环境，被称为"雪山之王"。</p>
+                        <button class="card-btn" onclick="showAnimalDetails('雪豹')">查看详情</button>
+                    </div>
+                </div>
+
+                <div class="animal-card" data-animal="川金丝猴" style="--delay: 0.4s;">
+                    <div class="card-image">
+                        <img src="https://bkimg.cdn.bcebos.com/pic/4034970a304e251f95ca8448eec9de177f3e6709f566" alt="川金丝猴" loading="lazy" onerror="this.src='https://bkimg.cdn.bcebos.com/pic/4034970a304e251f95ca8448eec9de177f3e6709f566'">
+                    </div>
+                    <div class="card-content">
+                        <h4><span class="animal-emoji">🐒</span>川金丝猴</h4>
+                        <p class="scientific">Rhinopithecus roxellana</p>
+                        <p class="habitat">栖息地：四川、陕西、湖北、甘肃</p>
+                        <p class="description">以其美丽的金色毛发而闻名，生活在高海拔森林中，是典型的树栖动物。</p>
+                        <button class="card-btn" onclick="showAnimalDetails('川金丝猴')">查看详情</button>
+                    </div>
+                </div>
+                
+                <div class="animal-card" data-animal="中华穿山甲" style="--delay: 0.5s;">
+                    <div class="card-image">
+                        <img src="https://tse1.mm.bing.net/th/id/OIP.jpPZxCFet01pTaCx7dQlYAHaEM?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="中华穿山甲" loading="lazy" onerror="this.src='https://tse1.mm.bing.net/th/id/OIP.jpPZxCFet01pTaCx7dQlYAHaEM?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3'">
+                    </div>
+                    <div class="card-content">
+                        <h4><span class="animal-emoji">🦔</span>中华穿山甲</h4>
+                        <p class="scientific">Manis pentadactyla</p>
+                        <p class="habitat">栖息地：中国南方森林</p>
+                        <p class="description">世界上唯一的鳞甲哺乳动物，因非法捕猎和栖息地丧失而极度濒危。</p>
+                        <button class="card-btn" onclick="showAnimalDetails('中华穿山甲')">查看详情</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="protection" class="protection-section">
+        <div class="container">
+            <h2 class="section-title">为什么保护珍稀动物至关重要？</h2>
+            <div class="reasons-grid">
+                <div class="reason-card" style="--delay: 0s;">
+                    <div class="reason-icon">🌿</div>
+                    <h3>维持生态平衡</h3>
+                    <p>每个物种在生态系统中都有其独特的作用。失去一个物种可能引发连锁反应，影响整个生态系统的稳定性。</p>
+                </div>
+                <div class="reason-card" style="--delay: 0.1s;">
+                    <div class="reason-icon">🧬</div>
+                    <h3>生物多样性</h3>
+                    <p>丰富的生物多样性是地球生命力的体现，也是人类生存和发展的基础。保护生物多样性就是保护人类的未来。</p>
+                </div>
+                <div class="reason-card" style="--delay: 0.2s;">
+                    <div class="reason-icon">⚖️</div>
+                    <h3>道德与伦理责任</h3>
+                    <p>作为地球的主宰者，人类有责任保护其他物种的生存权利，维护人与自然和谐共生的美好愿景。</p>
+                </div>
+                <div class="reason-card" style="--delay: 0.3s;">
+                    <div class="reason-icon">💊</div>
+                    <h3>生物医药价值</h3>
+                    <p>许多濒危动物可能含有对人类疾病治疗具有重要价值的基因和化合物，保护它们就是保护未来的医疗资源。</p>
+                </div>
+                <div class="reason-card" style="--delay: 0.4s;">
+                    <div class="reason-icon">🏔️</div>
+                    <h3>环境健康指标</h3>
+                    <p>珍稀动物的生存状态是环境健康度的晴雨表。保护它们，实质上也是在改善和保护我们人类的生存环境。</p>
+                </div>
+                <div class="reason-card" style="--delay: 0.5s;">
+                    <div class="reason-icon">🔬</div>
+                    <h3>科学研究价值</h3>
+                    <p>濒危动物为我们提供了独特的研究机会，帮助我们理解生命进化、适应机制和生态系统运作规律。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="action" class="action-section">
+        <div class="container">
+            <h2 class="section-title">让我们行动起来</h2>
+            <p class="section-subtitle">每个人都可以为保护珍稀动物贡献力量</p>
+            
+            <div class="actions-grid">
+                <div class="action-item" style="--delay: 0s;">
+                    <div class="action-number">01</div>
+                    <h3>提高保护意识</h3>
+                    <p>学习濒危动物知识，了解它们的生存现状，向身边人宣传保护理念。</p>
+                </div>
+                <div class="action-item" style="--delay: 0.1s;">
+                    <div class="action-number">02</div>
+                    <h3>支持保护组织</h3>
+                    <p>参与或资助专业的动物保护组织，支持他们的研究和保护工作。</p>
+                </div>
+                <div class="action-item" style="--delay: 0.2s;">
+                    <div class="action-number">03</div>
+                    <h3>拒绝非法贸易</h3>
+                    <p>不购买、不使用野生动物制品，举报非法野生动物交易行为。</p>
+                </div>
+                <div class="action-item" style="--delay: 0.3s;">
+                    <div class="action-number">04</div>
+                    <h3>保护栖息地</h3>
+                    <p>减少对自然环境的破坏，支持生态修复项目，为动物提供良好的生存空间。</p>
+                </div>
+                <div class="action-item" style="--delay: 0.4s;">
+                    <div class="action-number">05</div>
+                    <h3>践行绿色生活</h3>
+                    <p>节能减排，减少污染，从衣食住行的小事做起，降低对自然环境的影响。</p>
+                </div>
+                <div class="action-item" style="--delay: 0.5s;">
+                    <div class="action-number">06</div>
+                    <h3>参与志愿服务</h3>
+                    <p>参加野生动物保护相关的志愿服务活动，亲身参与保护工作。</p>
+                </div>
+            </div>
+
+            <div class="pledge-box">
+                <h3>做出你的保护承诺</h3>
+                <p>让我们一起承诺，为保护珍稀动物贡献自己的力量！</p>
+                <button class="pledge-button" onclick="showPledgeForm()">签署保护承诺</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 保护珍稀动物倡议网站 | 让我们共同守护地球上的每一个生命</p>
+            <div class="footer-links">
+                <a href="#home">返回顶部</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="animalModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        function toggleMenu() {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+        
+        function closeMenu() {
+            if (navMenu.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+        }
+        
+        function scrollToSection(id) {
+            const section = document.getElementById(id);
+            if (section) {
+                const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                window.scrollTo({
+                    top: section.offsetTop - navbarHeight,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        document.querySelectorAll('.nav-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+            });
+        });
+
+        const stats = document.querySelectorAll('.stat-card');
+        let statAnimationStarted = false;
+
+        function animateCount(statElement) {
+            const statNumberElement = statElement.querySelector('.stat-number');
+            const target = +statNumberElement.getAttribute('data-target');
+            const duration = 2000;
+            const start = 0;
+            let startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = timestamp - startTime;
+                const percentage = Math.min(progress / duration, 1);
+                const value = Math.floor(percentage * (target - start) + start);
+                statNumberElement.innerText = value.toLocaleString(); // 添加千位分隔符
+
+                if (percentage < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    statNumberElement.innerText = target.toLocaleString();
+                }
+            }
+
+            window.requestAnimationFrame(step);
+        }
+
+        const options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = entry.target;
+                    target.classList.add('visible');
+
+                    if (target.classList.contains('stat-card') && !statAnimationStarted) {
+                        stats.forEach(animateCount);
+                        statAnimationStarted = true;
+                    }
+
+                    if (target.id === 'featured-panda' || target.classList.contains('stat-card')) {
+                         observer.unobserve(target);
+                    }
+                }
+            });
+        }, options);
+
+        document.getElementById('featured-panda').classList.add('animate-target');
+        document.querySelectorAll('.animals-grid .animal-card').forEach(card => card.classList.add('animate-target'));
+        document.querySelectorAll('.reasons-grid .reason-card').forEach(card => card.classList.add('animate-target'));
+        document.querySelectorAll('.actions-grid .action-item').forEach(item => item.classList.add('animate-target'));
+        
+        document.querySelectorAll('.animate-target, .stat-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        const animalModal = document.getElementById('animalModal');
+        const modalBody = document.getElementById('modalBody');
+        const animalData = {
+            '华南虎': {
+                emoji: '🐅',
+                title: '华南虎',
+                scientific: 'Panthera tigris amoyensis',
+                content: '<p><strong>保护现状：</strong>极度濒危（CR），野外功能性灭绝。在野外已很难发现其踪迹。野化训练和栖息地恢复是唯一的希望。</p><p><strong>面临威胁：</strong>栖息地完全丧失、猎物稀少、偷猎。急需大规模的栖息地恢复计划。</p><p><strong>保护措施：</strong>人工饲养种群管理、野化训练、建立大型自然保护区进行栖息地恢复。</p>'
+            },
+            '朱鹮': {
+                emoji: '🦩',
+                title: '朱鹮',
+                scientific: 'Nipponia nippon',
+                content: '<p><strong>保护现状：</strong>近危（NT）。种群数量已从发现时的7只增加至数千只，是全球生物保护的奇迹之一。</p><p><strong>面临威胁：</strong>农药使用、栖息地破坏和污染，导致食物短缺。对环境质量要求极高。</p><p><strong>保护措施：</strong>建立野化放飞基地，严格保护核心栖息地及繁殖地，加强环境监测。</p>'
+            },
+            '长江江豚': {
+                emoji: '🐬',
+                title: '长江江豚',
+                scientific: 'Neophocaena asiaeorientalis',
+                content: '<p><strong>保护现状：</strong>极危（CR）。目前仅存约1000头，被认为是全球最濒危的淡水豚类，灭绝风险极高。</p><p><strong>面临威胁：</strong>水域污染、过度捕捞、繁忙的航运交通。水下噪音污染严重干扰其生存。</p><p><strong>保护措施：</strong>长江十年禁渔，建立多个迁地保护区（如天鹅洲），加强水域生态修复和航道管理。</p>'
+            },
+            '雪豹': {
+                emoji: '🐆',
+                title: '雪豹',
+                scientific: 'Panthera uncia',
+                content: '<p><strong>保护现状：</strong>易危（VU）。全球仅剩数千只，是高山生态系统的旗舰物种，其健康状态反映了高山生态的完整性。</p><p><strong>面临威胁：</strong>气候变化、人类与家畜的冲突、非法偷猎。全球变暖导致其栖息地退缩。</p><p><strong>保护措施：</strong>跨境合作保护，监测种群数量，开展社区宣传和反偷猎行动，解决人兽冲突。</p>'
+            },
+            '川金丝猴': {
+                emoji: '🐒',
+                title: '川金丝猴',
+                scientific: 'Rhinopithecus roxellana',
+                content: '<p><strong>保护现状：</strong>易危（VU）。种群数量相对稳定，但栖息地被隔离，影响基因交流。</p><p><strong>面临威胁：</strong>森林砍伐导致的栖息地破碎化和食物链破坏。道路建设也加剧了栖息地隔离。</p><p><strong>保护措施：</strong>设立自然保护区，开展长期生态监测，建设生态廊道，连接破碎的栖息地。</p>'
+            },
+            '中华穿山甲': {
+                emoji: '🦔',
+                title: '中华穿山甲',
+                scientific: 'Manis pentadactyla',
+                content: '<p><strong>保护现状：</strong>极危（CR）。是全球被非法捕猎最多的哺乳动物之一，种群数量急剧下降。</p><p><strong>面临威胁：</strong>非法盗猎和中药用途，栖息地丧失。其鳞片被误认为有药用价值。</p><p><strong>保护措施：</strong>升级为国家一级保护动物，严厉打击非法贸易，开展栖息地巡护和种群恢复项目。</p>'
+            }
+        };
+
+        function showAnimalDetails(animalName) {
+            closeMenu();
+            const data = animalData[animalName];
+            if (data) {
+                modalBody.innerHTML = `
+                    <h2 class="section-title" style="margin-top: 1rem; color: var(--primary-color);">${data.emoji} ${data.title}</h2>
+                    <p class="section-subtitle">${data.scientific}</p>
+                    <div class="detail-item" style="border-left: none; padding-left: 0;">${data.content}</div>
+                    <button class="pledge-button" onclick="showPledgeForm()" style="margin-top: 2rem;">签署保护承诺</button>
+                `;
+                animalModal.style.display = 'flex'; // 使用 flex 使模态框居中
+            }
+        }
+
+        function showPledgeForm() {
+            closeMenu();
+            modalBody.innerHTML = `
+                <h2 class="section-title" style="margin-top: 1rem; color: var(--primary-color);">签署保护承诺</h2>
+                <p class="section-subtitle">您的承诺将是保护事业的重要力量！</p>
+                <form id="pledgeForm" onsubmit="handlePledgeSubmit(event)">
+                    <input type="text" id="name" placeholder="您的姓名或昵称" required>
+                    <input type="email" id="email" placeholder="您的电子邮箱 (选填)">
+                    <textarea id="pledgeText" placeholder="写下您的保护宣言/承诺 (例如：我承诺从今天起拒绝购买任何野生动物制品！)" required></textarea>
+                    <button type="submit" class="submit-btn">我承诺！加入保护行列</button>
+                </form>
+            `;
+            animalModal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            animalModal.style.display = 'none';
+            modalBody.innerHTML = '';
+        }
+
+        function handlePledgeSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value || '热心保护者';
+            const pledgeText = document.getElementById('pledgeText').value;
+
+            modalBody.innerHTML = `
+                <h2 class="section-title" style="color: var(--secondary-color); margin-top: 1rem;">感谢您的承诺！🎉</h2>
+                <p class="section-subtitle"><strong>${name}</strong>，您的保护宣言已记录：</p>
+                <blockquote style="background: var(--bg-light); padding: 1.5rem; border-left: 5px solid var(--secondary-color); margin: 2rem 0; font-style: italic; font-size: 1.1rem; border-radius: 8px;">"${pledgeText}"</blockquote>
+                <p style="text-align: center; font-size: 1.1rem; color: var(--text-dark);">让我们一起为守护珍稀动物，共建美好家园而努力！</p>
+                <button class="cta-button" onclick="closeModal()" style="margin-top: 2rem;">关闭窗口</button>
+            `;
+        }
+
+        window.onclick = function(event) {
+            if (event.target == animalModal) {
+                closeModal();
+            }
+        }
+        
+    </script>
+</body>
+</html>
